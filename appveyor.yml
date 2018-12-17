@@ -33,6 +33,8 @@ install:
 build_script:
 - cmd: >-
     dotnet build ./src/%namespace%.sln
+    
+    dotnet pack ./src/%namespace% --no-build -p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 test_script:
 - cmd: >-
     dotnet test ./src/%namespace%.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=%cc% /p:CoverletOutput=%appveyor_build_folder%\%cc%\%namespace%.xml

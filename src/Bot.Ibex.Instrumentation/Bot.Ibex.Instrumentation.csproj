@@ -10,7 +10,6 @@
 
   <PropertyGroup>
     <IsPackable>true</IsPackable>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/ObjectivityLtd/Bot.Ibex.Instrumentation</PackageProjectUrl>
     <PackageIconUrl>https://github.com/ObjectivityLtd.png</PackageIconUrl>
     <PackageTags>bot botframework ibex ibex-dashboard analitycs</PackageTags>
@@ -18,6 +17,10 @@
     <RepositoryUrl>https://github.com/ObjectivityLtd/Bot.Ibex.Instrumentation.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Version Condition="'$(Version)'==''">1.0.0</Version>
+    <PackageVersion Condition="'$(PackageVersion)'==''">$(Version)</PackageVersion>
+    <AssemblyVersion Condition="'$(AssemblyVersion)'==''">$(Version)</AssemblyVersion>
+    <FileVersion Condition="'$(FileVersion)'==''">$(Version)</FileVersion>
+    <InformationalVersion Condition="'$(InformationalVersion)'==''">$(Version)</InformationalVersion>
     <Company Condition="'$(Company)'==''">Objectivity Ltd</Company>
     <Authors Condition="'$(Authors)'==''">$(Company)</Authors>
     <Copyright Condition="'$(Copyright)'==''">Copyright (c) $(Company)</Copyright>
