@@ -10,7 +10,7 @@ namespace Bot.Ibex.Instrumentation.Tests.Extensions
     [Trait("Category", "Extensions")]
     public class DateTimeExtensionsTests
     {
-        [Theory(DisplayName = "GIVEN DateTimeOffset WHEN AsIso8601 is invoked THEN expected string passed fixture is being returned")]
+        [Theory(DisplayName = "GIVEN DateTimeOffset WHEN AsIso8601 is invoked THEN expected string value is being returned")]
         [InlineAutoData(2018, 1, 17, 16, 0, 54, 432, "2018-01-17T16:00:54.432+00:00")]
         [InlineAutoData(1979, 10, 14, 9, 15, 0, 0, "1979-10-14T09:15:00+00:00")]
         [InlineAutoData(1999, 12, 31, 23, 59, 59, 999, "1999-12-31T23:59:59.999+00:00")]

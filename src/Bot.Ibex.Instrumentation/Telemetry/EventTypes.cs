@@ -7,5 +7,6 @@
         public const string MessageReceived = "MBFEvent.UserMessage";
         public const string MessageSent = "MBFEvent.BotMessage";
         public const string OtherActivity = "MBFEvent.Other";
+        public const string QnaEvent = "MBFEvent.QNAEvent";
     }
 }
