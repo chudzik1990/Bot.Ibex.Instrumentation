@@ -46,7 +46,7 @@ services.AddBot<BasicBot>(options =>
         new Settings {
             OmitUsernameFromTelemetry = false
         });
-    services.AddSingleton<IQnAInstrumentation, QnAInstrumentation>();
+    services.AddSingleton<IQnAInstrumentation>(instrumentation);
 });
 ```
 
