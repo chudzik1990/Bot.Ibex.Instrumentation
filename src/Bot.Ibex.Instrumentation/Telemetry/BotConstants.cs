@@ -1,6 +1,6 @@
 ﻿namespace Bot.Ibex.Instrumentation.Telemetry
 {
-    public static class Constants
+    public static class BotConstants
     {
         public const string ChannelProperty = "channel";
         public const string ConversationIdProperty = "conversationId";
