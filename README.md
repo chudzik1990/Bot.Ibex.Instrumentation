@@ -56,16 +56,14 @@ services.AddBot<BasicBot>(options =>
 
 ```csharp
 private async Task DispatchToQnAMakerAsync(
-    BotServices services,
-    string serviceName,
-    IQnAInstrumentation instrumentation,
+    QnAMaker qnaMaker,
     ITurnContext context,
+    IQnAInstrumentation instrumentation,
     CancellationToken cancellationToken = default(CancellationToken))
 {
     if (!string.IsNullOrEmpty(context.Activity.Text))
     {
-        var qna = services.QnAServices[serviceName];
-        var results = await qna.GetAnswersAsync(context)
+        var results = await qnaMaker.GetAnswersAsync(context)
             .ConfigureAwait(false);
 
         if (results.Any())
