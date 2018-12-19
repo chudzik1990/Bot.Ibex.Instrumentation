@@ -16,12 +16,12 @@ Provides general bot instrumentation.
 services.AddBot<BasicBot>(options =>
 {
     var telemetryConfig = new TelemetryConfiguration("<INSTRUMENTATION_KEY>");
-    var telemetryClient = new TelemetryClient(telemetryConfig)
+    var telemetryClient = new TelemetryClient(telemetryConfig);
     var instrumentation = new BotInstrumentation(
         telemetryClient,
         new Settings {
             OmitUsernameFromTelemetry = true
-        })
+        });
     options.Middleware.Add(instrumentation);
 });
 ```
@@ -40,12 +40,12 @@ Provides QnA Maker instrumentation.
 services.AddBot<BasicBot>(options =>
 {
     var telemetryConfig = new TelemetryConfiguration("<INSTRUMENTATION_KEY>");
-    var telemetryClient = new TelemetryClient(telemetryConfig)
+    var telemetryClient = new TelemetryClient(telemetryConfig);
     var instrumentation = new QnAInstrumentation(
         telemetryClient,
         new Settings {
             OmitUsernameFromTelemetry = false
-        })
+        });
     services.AddSingleton<IQnAInstrumentation, QnAInstrumentation>();
 });
 ```
