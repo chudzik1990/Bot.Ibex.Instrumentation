@@ -37,17 +37,14 @@ Provides QnA Maker instrumentation.
 ##### Setup
 
 ```csharp
-services.AddBot<BasicBot>(options =>
-{
-    var telemetryConfig = new TelemetryConfiguration("<INSTRUMENTATION_KEY>");
-    var telemetryClient = new TelemetryClient(telemetryConfig);
-    var instrumentation = new QnAInstrumentation(
-        telemetryClient,
-        new Settings {
-            OmitUsernameFromTelemetry = false
-        });
-    services.AddSingleton<IQnAInstrumentation>(instrumentation);
-});
+var telemetryConfig = new TelemetryConfiguration("<INSTRUMENTATION_KEY>");
+var telemetryClient = new TelemetryClient(telemetryConfig);
+var instrumentation = new QnAInstrumentation(
+    telemetryClient,
+    new Settings {
+        OmitUsernameFromTelemetry = false
+    });
+services.AddSingleton<IQnAInstrumentation>(instrumentation);
 ```
 
 * `<INSTRUMENTATION_KEY>` is an instrumentation key of Application Insights to be obtaned once it is configured in Azure.
