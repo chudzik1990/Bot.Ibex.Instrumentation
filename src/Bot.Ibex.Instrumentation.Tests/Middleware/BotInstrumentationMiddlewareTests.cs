@@ -1,11 +1,11 @@
-﻿namespace Bot.Ibex.Instrumentation.Tests.Instrumentations
+﻿namespace Bot.Ibex.Instrumentation.Tests.Middleware
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
     using AutoFixture.Xunit2;
-    using Bot.Ibex.Instrumentation.Instrumentations;
+    using Bot.Ibex.Instrumentation.Middleware;
     using Bot.Ibex.Instrumentation.Telemetry;
     using FluentAssertions;
     using Microsoft.ApplicationInsights;
@@ -19,13 +19,13 @@
 
     [Collection("BotInstrumentation")]
     [Trait("Category", "Instrumentations")]
-    public class BotInstrumentationTests
+    public class BotInstrumentationMiddlewareTests
     {
         private const string FakeInstrumentationKey = "FAKE-INSTRUMENTATION-KEY";
         private readonly Mock<ITelemetryChannel> mockTelemetryChannel = new Mock<ITelemetryChannel>();
         private readonly TelemetryClient telemetryClient;
 
-        public BotInstrumentationTests()
+        public BotInstrumentationMiddlewareTests()
         {
             var telemetryConfiguration = new TelemetryConfiguration(FakeInstrumentationKey, this.mockTelemetryChannel.Object);
             this.telemetryClient = new TelemetryClient(telemetryConfiguration);
@@ -38,7 +38,7 @@
             Settings settings)
         {
             // Arrange
-            var instrumentation = new BotInstrumentation(this.telemetryClient, settings);
+            var instrumentation = new BotInstrumentationMiddleware(this.telemetryClient, settings);
             var turnContext = new Mock<ITurnContext>();
             turnContext.SetupGet(c => c.Activity).Returns(activity);
 
@@ -56,7 +56,7 @@
             IFixture fixture)
         {
             // Arrange
-            var instrumentation = new BotInstrumentation(this.telemetryClient, settings);
+            var instrumentation = new BotInstrumentationMiddleware(this.telemetryClient, settings);
             var turnContextMock = new Mock<ITurnContext>();
             var activity = new Activity
             {
@@ -87,7 +87,7 @@
             IFixture fixture)
         {
             // Arrange
-            var instrumentation = new BotInstrumentation(this.telemetryClient, settings);
+            var instrumentation = new BotInstrumentationMiddleware(this.telemetryClient, settings);
             var turnContext = new Mock<ITurnContext>();
             var activity = new Activity
             {
@@ -117,7 +117,7 @@
         public async void GivenNextTurn_WhenOnTurnAsyncIsInvoked_ThenNextTurnInvoked(Settings settings)
         {
             // Arrange
-            var instrumentation = new BotInstrumentation(this.telemetryClient, settings);
+            var instrumentation = new BotInstrumentationMiddleware(this.telemetryClient, settings);
             var turnContext = new Mock<ITurnContext>();
             var nextTurnInvoked = false;
 
@@ -133,7 +133,7 @@
         public async void GivenEmptyTurnContext_WhenOnTurnAsyncIsInvoked_ThenExceptionIsThrown(Settings settings)
         {
             // Arrange
-            var instrumentation = new BotInstrumentation(this.telemetryClient, settings);
+            var instrumentation = new BotInstrumentationMiddleware(this.telemetryClient, settings);
             const ITurnContext emptyTurnContext = null;
             NextDelegate nextDelegate = Task.FromCanceled;
 
@@ -151,7 +151,7 @@
 
             // Act
             // Assert
-            Assert.Throws<ArgumentNullException>(() => new BotInstrumentation(emptyTelemetryClient, settings));
+            Assert.Throws<ArgumentNullException>(() => new BotInstrumentationMiddleware(emptyTelemetryClient, settings));
         }
 
         [Fact(DisplayName = "GIVEN empty settings WHEN constructor is invoked THEN exception is thrown")]
@@ -162,7 +162,7 @@
 
             // Act
             // Assert
-            Assert.Throws<ArgumentNullException>(() => new BotInstrumentation(this.telemetryClient, emptySettings));
+            Assert.Throws<ArgumentNullException>(() => new BotInstrumentationMiddleware(this.telemetryClient, emptySettings));
         }
     }
 }

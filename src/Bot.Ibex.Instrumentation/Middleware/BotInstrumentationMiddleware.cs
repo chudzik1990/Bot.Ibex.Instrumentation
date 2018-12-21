@@ -1,4 +1,4 @@
-﻿namespace Bot.Ibex.Instrumentation.Instrumentations
+﻿namespace Bot.Ibex.Instrumentation.Middleware
 {
     using System;
     using System.Threading;
@@ -9,12 +9,12 @@
     using Microsoft.Bot.Builder;
     using Microsoft.Bot.Schema;
 
-    public class BotInstrumentation : IMiddleware
+    public class BotInstrumentationMiddleware : IMiddleware
     {
         private readonly TelemetryClient telemetryClient;
         private readonly Settings settings;
 
-        public BotInstrumentation(TelemetryClient telemetryClient, Settings settings)
+        public BotInstrumentationMiddleware(TelemetryClient telemetryClient, Settings settings)
         {
             this.telemetryClient = telemetryClient ?? throw new ArgumentNullException(nameof(telemetryClient));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
