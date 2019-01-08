@@ -13,15 +13,18 @@
 
         public static MultiLanguageBatchInput ToSentimentInput(this IMessageActivity activity)
         {
-            return new MultiLanguageBatchInput(
-                new List<MultiLanguageInput>
-                {
-                    new MultiLanguageInput
+            return activity == null
+                ? null
+                : new MultiLanguageBatchInput(
+                    new List<MultiLanguageInput>
                     {
-                        Id = "1",
-                        Text = activity.Text
-                    }
-                });
+                        new MultiLanguageInput
+                        {
+                            // TODO: investigate the following Language = activity.Locale,
+                            Id = "1",
+                            Text = activity.Text
+                        }
+                    });
         }
     }
 }
