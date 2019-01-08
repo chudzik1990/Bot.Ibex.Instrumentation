@@ -4,8 +4,9 @@
     using System.Globalization;
     using System.Threading.Tasks;
     using AutoFixture.Xunit2;
-    using Instrumentation.Instrumentations;
-    using Instrumentation.Telemetry;
+    using Bot.Ibex.Instrumentation.Instrumentations;
+    using Bot.Ibex.Instrumentation.Sentiments;
+    using Bot.Ibex.Instrumentation.Telemetry;
     using Microsoft.ApplicationInsights;
     using Microsoft.ApplicationInsights.Channel;
     using Microsoft.ApplicationInsights.DataContracts;
@@ -13,7 +14,6 @@
     using Microsoft.Bot.Schema;
     using Moq;
     using Objectivity.AutoFixture.XUnit2.AutoMoq.Attributes;
-    using Sentiments;
     using Xunit;
 
     [Collection("SentimentInstrumentation")]

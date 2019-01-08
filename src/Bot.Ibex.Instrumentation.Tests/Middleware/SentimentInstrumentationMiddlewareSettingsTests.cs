@@ -2,8 +2,8 @@
 {
     using System;
     using AutoFixture.Xunit2;
-    using Instrumentation.Middleware;
-    using Sentiments;
+    using Bot.Ibex.Instrumentation.Middleware;
+    using Bot.Ibex.Instrumentation.Sentiments;
     using Xunit;
 
     [Collection("SentimentInstrumentationMiddlewareSettings")]

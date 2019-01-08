@@ -3,8 +3,9 @@
     using System;
     using System.Threading.Tasks;
     using AutoFixture.Xunit2;
+    using Bot.Ibex.Instrumentation.Middleware;
+    using Bot.Ibex.Instrumentation.Sentiments;
     using FluentAssertions;
-    using Instrumentation.Middleware;
     using Microsoft.ApplicationInsights;
     using Microsoft.ApplicationInsights.Channel;
     using Microsoft.ApplicationInsights.DataContracts;
@@ -14,7 +15,6 @@
     using Microsoft.Bot.Schema;
     using Moq;
     using Objectivity.AutoFixture.XUnit2.AutoMoq.Attributes;
-    using Sentiments;
     using Xunit;
 
     [Collection("SentimentInstrumentationMiddleware")]
