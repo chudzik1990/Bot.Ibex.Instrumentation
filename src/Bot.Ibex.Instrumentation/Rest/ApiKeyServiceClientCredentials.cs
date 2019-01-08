@@ -7,17 +7,23 @@
 
     public class ApiKeyServiceClientCredentials : ServiceClientCredentials
     {
-        private const string SubscriptionKeyHeaderName = "Ocp-Apim-Subscription-Key";
-        private readonly string subscriptionKey;
+        public const string SubscriptionKeyHeaderName = "Ocp-Apim-Subscription-Key";
 
         public ApiKeyServiceClientCredentials(string subscriptionKey)
         {
-            this.subscriptionKey = subscriptionKey;
+            this.SubscriptionKey = subscriptionKey;
         }
+
+        public string SubscriptionKey { get; }
 
         public override Task ProcessHttpRequestAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Add(SubscriptionKeyHeaderName, this.subscriptionKey);
+            if (request == null)
+            {
+                throw new System.ArgumentNullException(nameof(request));
+            }
+
+            request.Headers.Add(SubscriptionKeyHeaderName, this.SubscriptionKey);
             return base.ProcessHttpRequestAsync(request, cancellationToken);
         }
     }
