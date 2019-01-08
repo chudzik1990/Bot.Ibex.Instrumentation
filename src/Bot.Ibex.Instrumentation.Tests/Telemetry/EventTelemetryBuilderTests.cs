@@ -11,6 +11,8 @@
     using Objectivity.AutoFixture.XUnit2.AutoMoq.Attributes;
     using Xunit;
 
+    [Collection("EventTelemetryBuilder")]
+    [Trait("Category", "EventTelemetry")]
     public class EventTelemetryBuilderTests
     {
         private const string FakeActivityType = "FAKE-ACTIVITY-TYPE";
@@ -158,9 +160,9 @@
             eventTelemetry.Properties[BotConstants.ChannelProperty].Should().Be(activity.ChannelId);
         }
 
-        [Theory(DisplayName = "GIVEN empty activity WHEN constructor is invoked THEN exception is thrown")]
+        [Theory(DisplayName = "GIVEN empty activity WHEN EventTelemetryBuilder is constructed THEN exception is thrown")]
         [AutoData]
-        public void GivenEmptyActivity_WhenConstructorIsInvoked_ThenExceptionIsThrown(Settings settings)
+        public void GivenEmptyActivity_WhenEventTelemetryBuilderIsConstructed_ThenExceptionIsThrown(Settings settings)
         {
             // Arrange
             const IActivity emptyActivity = null;
@@ -170,9 +172,9 @@
             Assert.Throws<ArgumentNullException>(() => new EventTelemetryBuilder(emptyActivity, settings));
         }
 
-        [Theory(DisplayName = "GIVEN empty settings WHEN constructor is invoked THEN exception is thrown")]
+        [Theory(DisplayName = "GIVEN empty settings WHEN EventTelemetryBuilder is constructed THEN exception is thrown")]
         [AutoMockData]
-        public void GivenEmptySettings_WhenConstructorIsInvoked_ThenExceptionIsThrown(IActivity activity)
+        public void GivenEmptySettings_WhenEventTelemetryBuilderIsConstructed_ThenExceptionIsThrown(IActivity activity)
         {
             // Arrange
             const Settings emptySettings = null;

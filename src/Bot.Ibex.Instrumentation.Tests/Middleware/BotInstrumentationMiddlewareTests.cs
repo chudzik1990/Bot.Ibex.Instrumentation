@@ -17,8 +17,8 @@
     using Moq;
     using Xunit;
 
-    [Collection("BotInstrumentation")]
-    [Trait("Category", "Instrumentations")]
+    [Collection("BotInstrumentationMiddleware")]
+    [Trait("Category", "Middleware")]
     public class BotInstrumentationMiddlewareTests
     {
         private const string FakeInstrumentationKey = "FAKE-INSTRUMENTATION-KEY";
@@ -142,9 +142,9 @@
             await Assert.ThrowsAsync<ArgumentNullException>(() => instrumentation.OnTurnAsync(emptyTurnContext, nextDelegate)).ConfigureAwait(false);
         }
 
-        [Theory(DisplayName = "GIVEN empty telemetry client WHEN constructor is invoked THEN exception is thrown")]
+        [Theory(DisplayName = "GIVEN empty telemetry client WHEN BotInstrumentationMiddleware is constructed THEN exception is thrown")]
         [AutoData]
-        public void GivenEmptyTelemetryClient_WhenConstructorIsInvoked_ThenExceptionIsThrown(Settings settings)
+        public void GivenEmptyTelemetryClient_WhenBotInstrumentationMiddlewareIsConstructed_ThenExceptionIsThrown(Settings settings)
         {
             // Arrange
             const TelemetryClient emptyTelemetryClient = null;
@@ -154,8 +154,8 @@
             Assert.Throws<ArgumentNullException>(() => new BotInstrumentationMiddleware(emptyTelemetryClient, settings));
         }
 
-        [Fact(DisplayName = "GIVEN empty settings WHEN constructor is invoked THEN exception is thrown")]
-        public void GivenEmptySettings_WhenConstructorIsInvoked_ThenExceptionIsThrown()
+        [Fact(DisplayName = "GIVEN empty settings WHEN BotInstrumentationMiddleware is constructed THEN exception is thrown")]
+        public void GivenEmptySettings_WhenBotInstrumentationMiddlewareIsConstructed_ThenExceptionIsThrown()
         {
             // Arrange
             const Settings emptySettings = null;

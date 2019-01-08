@@ -15,6 +15,8 @@
     using Objectivity.AutoFixture.XUnit2.AutoMoq.Attributes;
     using Xunit;
 
+    [Collection("QnAInstrumentation")]
+    [Trait("Category", "Instrumentations")]
     public class QnAInstrumentationTests
     {
         private const string FakeInstrumentationKey = "FAKE-INSTRUMENTATION-KEY";
@@ -79,9 +81,9 @@
             Assert.Throws<ArgumentNullException>(() => instrumentation.TrackEvent(activity, emptyQueryResult));
         }
 
-        [Theory(DisplayName = "GIVEN empty telemetry client WHEN constructor is invoked THEN exception is thrown")]
+        [Theory(DisplayName = "GIVEN empty telemetry client WHEN QnAInstrumentation is constructed THEN exception is thrown")]
         [AutoData]
-        public void GivenEmptyTelemetryClient_WhenConstructorIsInvoked_ThenExceptionIsThrown(Settings settings)
+        public void GivenEmptyTelemetryClient_WhenQnAInstrumentationIsConstructed_ThenExceptionIsThrown(Settings settings)
         {
             // Arrange
             const TelemetryClient emptyTelemetryClient = null;
@@ -91,8 +93,8 @@
             Assert.Throws<ArgumentNullException>(() => new QnAInstrumentation(emptyTelemetryClient, settings));
         }
 
-        [Fact(DisplayName = "GIVEN empty settings WHEN constructor is invoked THEN exception is thrown")]
-        public void GivenEmptySettings_WhenConstructorIsInvoked_ThenExceptionIsThrown()
+        [Fact(DisplayName = "GIVEN empty settings WHEN QnAInstrumentation is constructed THEN exception is thrown")]
+        public void GivenEmptySettings_WhenQnAInstrumentationIsConstructed_ThenExceptionIsThrown()
         {
             // Arrange
             const Settings emptySettings = null;
