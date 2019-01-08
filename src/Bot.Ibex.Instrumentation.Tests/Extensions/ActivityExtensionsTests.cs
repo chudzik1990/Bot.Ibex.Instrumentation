@@ -10,7 +10,7 @@
     [Trait("Category", "Extensions")]
     public class ActivityExtensionsTests
     {
-        private const string ValidReplyToId = "SOME_REPLY_TO_ID";
+        private const string ValidReplyToId = "SOME-REPLY-TO-ID";
 
         [Theory(DisplayName = "GIVEN Activity WHEN IsIncomingMessage is invoked THEN expected result is being returned")]
         [InlineAutoMockData(ActivityTypes.Message, ValidReplyToId, false)]
