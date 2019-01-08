@@ -6,10 +6,7 @@
     using System.Threading;
     using AutoFixture.Xunit2;
     using FluentAssertions;
-    using Instrumentation.Middleware;
     using Instrumentation.Rest;
-    using Microsoft.Bot.Builder;
-    using Moq;
     using Xunit;
 
     [Collection("ApiKeyServiceClientCredentials")]
