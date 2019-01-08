@@ -17,6 +17,8 @@
     using Sentiments;
     using Xunit;
 
+    [Collection("SentimentInstrumentationMiddleware")]
+    [Trait("Category", "Middleware")]
     public class SentimentInstrumentationMiddlewareTests
     {
         private const string FakeInstrumentationKey = "FAKE-INSTRUMENTATION-KEY";
