@@ -31,11 +31,11 @@
             this.telemetryClient = new TelemetryClient(telemetryConfiguration);
         }
 
-        [Theory(DisplayName = "GIVEN turn context with any activity WHEN OnTurnAsync is invoked THEN even telemetry sent")]
+        [Theory(DisplayName = "GIVEN turn context with any activity WHEN OnTurnAsync is invoked THEN event telemetry sent")]
         [AutoData]
-        public async void GivenTurnContextWithAnyActivity_WhenOnTurnAsyncIsInvoked_ThenEvenTelemetrySent(
+        public async void GivenTurnContextWithAnyActivity_WhenOnTurnAsyncIsInvoked_ThenEventTelemetrySent(
             Activity activity,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new BotInstrumentationMiddleware(this.telemetryClient, settings);
@@ -51,8 +51,8 @@
 
         [Theory(DisplayName = "GIVEN turn context WHEN SendActivities is invoked THEN event telemetry sent")]
         [AutoData]
-        public async void GivenTurnContext_WhenSendActivitiesInvoked_ThenEvenTelemetrySent(
-            Settings settings,
+        public async void GivenTurnContext_WhenSendActivitiesInvoked_ThenEventTelemetrySent(
+            InstrumentationSettings settings,
             IFixture fixture)
         {
             // Arrange
@@ -82,8 +82,8 @@
 
         [Theory(DisplayName = "GIVEN turn context WHEN UpdateActivity is invoked THEN event telemetry sent")]
         [AutoData]
-        public async void GivenTurnContext_WhenUpdateActivityInvoked_ThenEvenTelemetrySent(
-            Settings settings,
+        public async void GivenTurnContext_WhenUpdateActivityInvoked_ThenEventTelemetrySent(
+            InstrumentationSettings settings,
             IFixture fixture)
         {
             // Arrange
@@ -114,7 +114,7 @@
 
         [Theory(DisplayName = "GIVEN next turn WHEN OnTurnAsync is invoked THEN next turn invoked")]
         [AutoData]
-        public async void GivenNextTurn_WhenOnTurnAsyncIsInvoked_ThenNextTurnInvoked(Settings settings)
+        public async void GivenNextTurn_WhenOnTurnAsyncIsInvoked_ThenNextTurnInvoked(InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new BotInstrumentationMiddleware(this.telemetryClient, settings);
@@ -130,7 +130,7 @@
 
         [Theory(DisplayName = "GIVEN empty turn context WHEN OnTurnAsync is invoked THEN exception is thrown")]
         [AutoData]
-        public async void GivenEmptyTurnContext_WhenOnTurnAsyncIsInvoked_ThenExceptionIsThrown(Settings settings)
+        public async void GivenEmptyTurnContext_WhenOnTurnAsyncIsInvoked_ThenExceptionIsThrown(InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new BotInstrumentationMiddleware(this.telemetryClient, settings);
@@ -144,7 +144,7 @@
 
         [Theory(DisplayName = "GIVEN empty telemetry client WHEN BotInstrumentationMiddleware is constructed THEN exception is thrown")]
         [AutoData]
-        public void GivenEmptyTelemetryClient_WhenBotInstrumentationMiddlewareIsConstructed_ThenExceptionIsThrown(Settings settings)
+        public void GivenEmptyTelemetryClient_WhenBotInstrumentationMiddlewareIsConstructed_ThenExceptionIsThrown(InstrumentationSettings settings)
         {
             // Arrange
             const TelemetryClient emptyTelemetryClient = null;
@@ -158,7 +158,7 @@
         public void GivenEmptySettings_WhenBotInstrumentationMiddlewareIsConstructed_ThenExceptionIsThrown()
         {
             // Arrange
-            const Settings emptySettings = null;
+            const InstrumentationSettings emptySettings = null;
 
             // Act
             // Assert

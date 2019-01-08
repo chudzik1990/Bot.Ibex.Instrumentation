@@ -19,27 +19,32 @@
 
         public SentimentInstrumentationMiddleware(
             TelemetryClient telemetryClient,
-            Settings settings,
-            SentimentClientSettings sentimentClientSettings)
-            : this(telemetryClient, settings, new SentimentClient(sentimentClientSettings))
+            SentimentInstrumentationMiddlewareSettings middlewareSettings)
+            : this(
+                telemetryClient,
+                new SentimentClient(middlewareSettings?.SentimentClientSettings),
+                middlewareSettings?.InstrumentationSettings)
         {
         }
 
         public SentimentInstrumentationMiddleware(
             TelemetryClient telemetryClient,
-            Settings settings,
-            ITextAnalyticsClient textAnalyticsClient)
-            : this(telemetryClient, settings, new SentimentClient(textAnalyticsClient))
+            ITextAnalyticsClient textAnalyticsClient,
+            InstrumentationSettings instrumentationSettings)
+            : this(
+                telemetryClient,
+                new SentimentClient(textAnalyticsClient),
+                instrumentationSettings)
         {
         }
 
         public SentimentInstrumentationMiddleware(
             TelemetryClient telemetryClient,
-            Settings settings,
-            ISentimentClient sentimentClient)
+            ISentimentClient sentimentClient,
+            InstrumentationSettings instrumentationSettings)
         {
             this.sentimentClient = sentimentClient ?? throw new ArgumentNullException(nameof(sentimentClient));
-            this.sentimentInstrumentation = new SentimentInstrumentation(this.sentimentClient, telemetryClient, settings);
+            this.sentimentInstrumentation = new SentimentInstrumentation(this.sentimentClient, telemetryClient, instrumentationSettings);
         }
 
         public async Task OnTurnAsync(

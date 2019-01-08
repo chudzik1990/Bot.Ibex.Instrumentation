@@ -17,14 +17,14 @@
     {
         private const string FakeActivityType = "FAKE-ACTIVITY-TYPE";
 
-        [Theory(DisplayName = "GIVEN activity type other than Message WHEN Build is invoked THEN even telemetry created")]
+        [Theory(DisplayName = "GIVEN activity type other than Message WHEN Build is invoked THEN event telemetry created")]
         [InlineAutoData(ActivityTypes.ConversationUpdate, EventTypes.ConversationUpdate)]
         [InlineAutoData(ActivityTypes.EndOfConversation, EventTypes.ConversationEnded)]
         [InlineAutoData(FakeActivityType, EventTypes.OtherActivity)]
-        public void GivenActivityTypeOtherThanMessage_WhenBuildIsInvoked_ThenEvenTelemetryCreated(
+        public void GivenActivityTypeOtherThanMessage_WhenBuildIsInvoked_ThenEventTelemetryCreated(
             string activityType,
             string expectedTelemetryName,
-            Settings settings,
+            InstrumentationSettings settings,
             IFixture fixture)
         {
             // Arrange
@@ -48,11 +48,11 @@
             eventTelemetry.Properties[BotConstants.ChannelProperty].Should().Be(activity.ChannelId);
         }
 
-        [Theory(DisplayName = "GIVEN additional properties WHEN Build is invoked THEN even telemetry with properties created")]
+        [Theory(DisplayName = "GIVEN additional properties WHEN Build is invoked THEN event telemetry with properties created")]
         [AutoMockData]
-        public void GivenAdditionalProperties_WhenBuildIsInvoked_ThenEvenTelemetryWithPropertiesCreated(
+        public void GivenAdditionalProperties_WhenBuildIsInvoked_ThenEventTelemetryWithPropertiesCreated(
             IActivity activity,
-            Settings settings,
+            InstrumentationSettings settings,
             IDictionary<string, string> properties)
         {
             // Arrange
@@ -68,8 +68,8 @@
 
         [Theory(DisplayName = "GIVEN Message type activity and ReplyToId WHEN Build is invoked THEN event telemetry created")]
         [AutoData]
-        public void GivenMessageTypeActivityAndReplyToId_WhenBuildIsInvoked_ThenEvenTelemetryCreated(
-            Settings settings,
+        public void GivenMessageTypeActivityAndReplyToId_WhenBuildIsInvoked_ThenEventTelemetryCreated(
+            InstrumentationSettings settings,
             IFixture fixture)
         {
             // Arrange
@@ -99,10 +99,10 @@
 
         [Theory(DisplayName = "GIVEN Message type activity and omit username setting WHEN Build is invoked THEN event telemetry created")]
         [AutoData]
-        public void GivenMessageTypeActivityAndOmitUsernameSetting_WhenBuildIsInvoked_ThenEvenTelemetryCreated(IFixture fixture)
+        public void GivenMessageTypeActivityAndOmitUsernameSetting_WhenBuildIsInvoked_ThenEventTelemetryCreated(IFixture fixture)
         {
             // Arrange
-            var settings = new Settings { OmitUsernameFromTelemetry = true };
+            var settings = new InstrumentationSettings { OmitUsernameFromTelemetry = true };
             var activity = new Activity
             {
                 Type = ActivityTypes.Message,
@@ -130,10 +130,10 @@
 
         [Theory(DisplayName = "GIVEN Message type activity and no omit username setting WHEN Build is invoked THEN event telemetry created")]
         [AutoData]
-        public void GivenMessageTypeActivityAndNoOmitUsernameSetting_WhenBuildIsInvoked_ThenEvenTelemetryCreated(IFixture fixture)
+        public void GivenMessageTypeActivityAndNoOmitUsernameSetting_WhenBuildIsInvoked_ThenEventTelemetryCreated(IFixture fixture)
         {
             // Arrange
-            var settings = new Settings { OmitUsernameFromTelemetry = false };
+            var settings = new InstrumentationSettings { OmitUsernameFromTelemetry = false };
             var activity = new Activity
             {
                 Type = ActivityTypes.Message,
@@ -162,7 +162,7 @@
 
         [Theory(DisplayName = "GIVEN empty activity WHEN EventTelemetryBuilder is constructed THEN exception is thrown")]
         [AutoData]
-        public void GivenEmptyActivity_WhenEventTelemetryBuilderIsConstructed_ThenExceptionIsThrown(Settings settings)
+        public void GivenEmptyActivity_WhenEventTelemetryBuilderIsConstructed_ThenExceptionIsThrown(InstrumentationSettings settings)
         {
             // Arrange
             const IActivity emptyActivity = null;
@@ -177,7 +177,7 @@
         public void GivenEmptySettings_WhenEventTelemetryBuilderIsConstructed_ThenExceptionIsThrown(IActivity activity)
         {
             // Arrange
-            const Settings emptySettings = null;
+            const InstrumentationSettings emptySettings = null;
 
             // Act
             // Assert

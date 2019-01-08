@@ -12,9 +12,9 @@
     public class BotInstrumentationMiddleware : IMiddleware
     {
         private readonly TelemetryClient telemetryClient;
-        private readonly Settings settings;
+        private readonly InstrumentationSettings settings;
 
-        public BotInstrumentationMiddleware(TelemetryClient telemetryClient, Settings settings)
+        public BotInstrumentationMiddleware(TelemetryClient telemetryClient, InstrumentationSettings settings)
         {
             this.telemetryClient = telemetryClient ?? throw new ArgumentNullException(nameof(telemetryClient));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));

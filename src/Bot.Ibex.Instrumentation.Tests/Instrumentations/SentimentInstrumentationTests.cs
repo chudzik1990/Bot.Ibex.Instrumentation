@@ -30,13 +30,13 @@
             this.telemetryClient = new TelemetryClient(telemetryConfiguration);
         }
 
-        [Theory(DisplayName = "GIVEN any activity WHEN TrackMessageSentiment is invoked THEN even telemetry is being sent")]
+        [Theory(DisplayName = "GIVEN any activity WHEN TrackMessageSentiment is invoked THEN event telemetry is being sent")]
         [AutoMockData]
-        public async void GivenAnyActivity_WhenTrackEventIsInvoked_ThenEvenTelemetryIsBeingSent(
+        public async void GivenAnyActivity_WhenTrackEventIsInvoked_ThenEventTelemetryIsBeingSent(
             double sentimentScore,
             IMessageActivity activity,
             ISentimentClient sentimentClient,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new SentimentInstrumentation(sentimentClient, this.telemetryClient, settings);
@@ -55,7 +55,7 @@
         [AutoMockData]
         public async void GivenEmptyActivity_WhenTrackMessageSentimentIsInvoked_ThenExceptionIsBeingThrown(
             ISentimentClient sentimentClient,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             IMessageActivity activity = null;
@@ -68,7 +68,7 @@
 
         [Theory(DisplayName = "GIVEN empty sentiment client WHEN SentimentInstrumentation is constructed THEN exception is being thrown")]
         [AutoData]
-        public void GivenEmptySentimentClient_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(Settings settings)
+        public void GivenEmptySentimentClient_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(InstrumentationSettings settings)
         {
             // Arrange
             const ISentimentClient sentimentClient = null;
@@ -80,7 +80,7 @@
 
         [Theory(DisplayName = "GIVEN empty telemetry client WHEN SentimentInstrumentation is constructed THEN exception is being thrown")]
         [AutoMockData]
-        public void GivenEmptyTelemetryClient_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(ISentimentClient sentimentClient, Settings settings)
+        public void GivenEmptyTelemetryClient_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(ISentimentClient sentimentClient, InstrumentationSettings settings)
         {
             // Arrange
             const TelemetryClient emptyTelemetryClient = null;
@@ -95,7 +95,7 @@
         public void GivenEmptySettings_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsThrown(ISentimentClient sentimentClient)
         {
             // Arrange
-            const Settings emptySettings = null;
+            const InstrumentationSettings emptySettings = null;
 
             // Act
             // Assert

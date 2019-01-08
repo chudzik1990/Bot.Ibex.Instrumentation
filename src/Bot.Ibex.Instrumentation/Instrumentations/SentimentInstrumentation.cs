@@ -14,9 +14,9 @@
     {
         private readonly ISentimentClient sentimentClient;
         private readonly TelemetryClient telemetryClient;
-        private readonly Settings settings;
+        private readonly InstrumentationSettings settings;
 
-        public SentimentInstrumentation(ISentimentClient sentimentClient, TelemetryClient telemetryClient, Settings settings)
+        public SentimentInstrumentation(ISentimentClient sentimentClient, TelemetryClient telemetryClient, InstrumentationSettings settings)
         {
             this.sentimentClient = sentimentClient ?? throw new ArgumentNullException(nameof(sentimentClient));
             this.telemetryClient = telemetryClient ?? throw new ArgumentNullException(nameof(telemetryClient));

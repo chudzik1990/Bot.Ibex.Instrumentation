@@ -29,12 +29,12 @@
             this.telemetryClient = new TelemetryClient(telemetryConfiguration);
         }
 
-        [Theory(DisplayName = "GIVEN any activity WHEN TrackEvent is invoked THEN even telemetry sent")]
+        [Theory(DisplayName = "GIVEN any activity WHEN TrackEvent is invoked THEN event telemetry sent")]
         [AutoMockData]
-        public void GivenAnyActivity_WhenTrackEventIsInvoked_ThenEvenTelemetrySent(
+        public void GivenAnyActivity_WhenTrackEventIsInvoked_ThenEventTelemetrySent(
             IMessageActivity activity,
             QueryResult queryResult,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new QnAInstrumentation(this.telemetryClient, settings);
@@ -55,7 +55,7 @@
         [AutoData]
         public void GivenEmptyActivity_WhenTrackEventIsInvoked_ThenExceptionIsThrown(
             QueryResult queryResult,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new QnAInstrumentation(this.telemetryClient, settings);
@@ -70,7 +70,7 @@
         [AutoMockData]
         public void GivenEmptyQueryResult_WhenTrackEventIsInvoked_ThenExceptionIsThrown(
             IMessageActivity activity,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new QnAInstrumentation(this.telemetryClient, settings);
@@ -83,7 +83,7 @@
 
         [Theory(DisplayName = "GIVEN empty telemetry client WHEN QnAInstrumentation is constructed THEN exception is thrown")]
         [AutoData]
-        public void GivenEmptyTelemetryClient_WhenQnAInstrumentationIsConstructed_ThenExceptionIsThrown(Settings settings)
+        public void GivenEmptyTelemetryClient_WhenQnAInstrumentationIsConstructed_ThenExceptionIsThrown(InstrumentationSettings settings)
         {
             // Arrange
             const TelemetryClient emptyTelemetryClient = null;
@@ -97,7 +97,7 @@
         public void GivenEmptySettings_WhenQnAInstrumentationIsConstructed_ThenExceptionIsThrown()
         {
             // Arrange
-            const Settings emptySettings = null;
+            const InstrumentationSettings emptySettings = null;
 
             // Act
             // Assert

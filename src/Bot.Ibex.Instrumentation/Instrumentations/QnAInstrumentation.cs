@@ -14,9 +14,9 @@
         public const string QuestionsSeparator = ",";
 
         private readonly TelemetryClient telemetryClient;
-        private readonly Settings settings;
+        private readonly InstrumentationSettings settings;
 
-        public QnAInstrumentation(TelemetryClient telemetryClient, Settings settings)
+        public QnAInstrumentation(TelemetryClient telemetryClient, InstrumentationSettings settings)
         {
             this.telemetryClient = telemetryClient ?? throw new ArgumentNullException(nameof(telemetryClient));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
