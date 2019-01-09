@@ -27,7 +27,8 @@
         {
             BotAssert.ActivityNotNull(activity);
 
-            var score = await this.sentimentClient.GetSentiment(activity).ConfigureAwait(false);
+            var score = await this.sentimentClient.GetSentiment(activity)
+                .ConfigureAwait(false);
             var properties = new Dictionary<string, string>
             {
                 { SentimentConstants.Score, score.Value.ToString(CultureInfo.InvariantCulture) }

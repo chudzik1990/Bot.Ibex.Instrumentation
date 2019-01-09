@@ -36,7 +36,8 @@
             // hook up onSend pipeline
             turnContext.OnSendActivities(async (ctx, activities, nextSend) =>
             {
-                var responses = await nextSend().ConfigureAwait(false);
+                var responses = await nextSend()
+                    .ConfigureAwait(false);
 
                 foreach (var activity in activities)
                 {
@@ -50,7 +51,8 @@
             // hook up update activity pipeline
             turnContext.OnUpdateActivity(async (ctx, activity, nextUpdate) =>
             {
-                var response = await nextUpdate().ConfigureAwait(false);
+                var response = await nextUpdate()
+                    .ConfigureAwait(false);
 
                 var et = this.BuildEventTelemetry(activity);
                 this.telemetryClient.TrackEvent(et);
@@ -60,7 +62,8 @@
 
             if (next != null)
             {
-                await next(cancellationToken).ConfigureAwait(false);
+                await next(cancellationToken)
+                    .ConfigureAwait(false);
             }
         }
 

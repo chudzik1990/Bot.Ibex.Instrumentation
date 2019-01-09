@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using AutoFixture.Xunit2;
     using FluentAssertions;
     using Instrumentation.Sentiments;
     using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
@@ -33,7 +32,10 @@
                 Body = new SentimentBatchResult(new[] { new SentimentBatchResultItem(sentiment) })
             };
             Mock.Get(textAnalyticsClient)
-                .Setup(tac => tac.SentimentWithHttpMessagesAsync(It.IsAny<MultiLanguageBatchInput>(), It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<CancellationToken>()))
+                .Setup(tac => tac.SentimentWithHttpMessagesAsync(
+                    It.IsAny<MultiLanguageBatchInput>(),
+                    It.IsAny<Dictionary<string, List<string>>>(),
+                    It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(response));
 
             // Act
@@ -51,11 +53,11 @@
         {
             // Arrange
             var instrumentation = new SentimentClient(textAnalyticsClient);
-            const IMessageActivity activity = null;
+            const IMessageActivity emptyMessageActivity = null;
 
             // Act
             // Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => instrumentation.GetSentiment(activity))
+            await Assert.ThrowsAsync<ArgumentNullException>(() => instrumentation.GetSentiment(emptyMessageActivity))
                 .ConfigureAwait(false);
         }
 
@@ -100,7 +102,7 @@
         [Theory(DisplayName = "GIVEN SentimentClient WHEN Dispose is invoked THEN other resources are being disposed as well")]
         [AutoMockData]
         public void GivenSentimentClient_WhenDisposeIsInvoked_ThenOtherResourcesAreBeingDisposedAsWell(
-            [Frozen] ITextAnalyticsClient textAnalyticsClient)
+            ITextAnalyticsClient textAnalyticsClient)
         {
             // Arrange
             var sentimentClient = new SentimentClient(textAnalyticsClient);

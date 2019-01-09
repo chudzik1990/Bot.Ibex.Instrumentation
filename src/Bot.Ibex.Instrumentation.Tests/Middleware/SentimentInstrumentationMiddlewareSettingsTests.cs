@@ -12,26 +12,28 @@
     {
         [Theory(DisplayName = "GIVEN empty InstrumentationSettings and any SentimentInstrumentationMiddlewareSettings WHEN SentimentInstrumentationMiddleware is constructed THEN exception is being thrown")]
         [AutoData]
-        public void GivenEmptyInstrumentationSettingsAndAnySentimentClientSettings_WhenSentimentInstrumentationMiddlewareSettingsIsConstructed_ThenExceptionIsBeingThrown(SentimentClientSettings sentimentClientSettings)
+        public void GivenEmptyInstrumentationSettingsAndAnySentimentClientSettings_WhenSentimentInstrumentationMiddlewareSettingsIsConstructed_ThenExceptionIsBeingThrown(
+            SentimentClientSettings sentimentClientSettings)
         {
             // Arrange
-            const InstrumentationSettings instrumentationSettings = null;
+            const InstrumentationSettings emptyInstrumentationSettings = null;
 
             // Act
             // Assert
-            Assert.Throws<ArgumentNullException>(() => new SentimentInstrumentationMiddlewareSettings(instrumentationSettings, sentimentClientSettings));
+            Assert.Throws<ArgumentNullException>(() => new SentimentInstrumentationMiddlewareSettings(emptyInstrumentationSettings, sentimentClientSettings));
         }
 
         [Theory(DisplayName = "GIVEN empty InstrumentationSettings and any SentimentInstrumentationMiddlewareSettings WHEN SentimentInstrumentationMiddleware is constructed THEN exception is being thrown")]
         [AutoData]
-        public void GivenAnyInstrumentationSettingsAndEmptySentimentClientSettings_WhenSentimentInstrumentationMiddlewareSettingsIsConstructed_ThenExceptionIsBeingThrown(InstrumentationSettings instrumentationSettings)
+        public void GivenAnyInstrumentationSettingsAndEmptySentimentClientSettings_WhenSentimentInstrumentationMiddlewareSettingsIsConstructed_ThenExceptionIsBeingThrown(
+            InstrumentationSettings instrumentationSettings)
         {
             // Arrange
-            const SentimentClientSettings sentimentClientSettings = null;
+            const SentimentClientSettings emptySentimentClientSettings = null;
 
             // Act
             // Assert
-            Assert.Throws<ArgumentNullException>(() => new SentimentInstrumentationMiddlewareSettings(instrumentationSettings, sentimentClientSettings));
+            Assert.Throws<ArgumentNullException>(() => new SentimentInstrumentationMiddlewareSettings(instrumentationSettings, emptySentimentClientSettings));
         }
     }
 }

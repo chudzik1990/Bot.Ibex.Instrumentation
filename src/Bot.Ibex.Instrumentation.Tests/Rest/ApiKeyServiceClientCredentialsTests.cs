@@ -22,7 +22,8 @@
             var request = new HttpRequestMessage();
 
             // Act
-            await credentials.ProcessHttpRequestAsync(request, default(CancellationToken)).ConfigureAwait(false);
+            await credentials.ProcessHttpRequestAsync(request, default(CancellationToken))
+                .ConfigureAwait(false);
 
             // Assert
             var collection = request.Headers.ToList();
@@ -34,14 +35,16 @@
 
         [Theory(DisplayName = "GIVEN empty HttpRequestMessage WHEN ProcessHttpRequestAsync is invoked THEN exception is being thrown")]
         [AutoData]
-        public async void GivenEmptyHttpRequestMessage_WhenProcessHttpRequestAsyncIsInvoked_ThenExceptionIsBeingThrown(ApiKeyServiceClientCredentials credentials)
+        public async void GivenEmptyHttpRequestMessage_WhenProcessHttpRequestAsyncIsInvoked_ThenExceptionIsBeingThrown(
+            ApiKeyServiceClientCredentials credentials)
         {
             // Arrange
             const HttpRequestMessage emptyHttpRequestMessage = null;
 
             // Act
             // Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => credentials.ProcessHttpRequestAsync(emptyHttpRequestMessage, default(CancellationToken))).ConfigureAwait(false);
+            await Assert.ThrowsAsync<ArgumentNullException>(() => credentials.ProcessHttpRequestAsync(emptyHttpRequestMessage, default(CancellationToken)))
+                .ConfigureAwait(false);
         }
     }
 }

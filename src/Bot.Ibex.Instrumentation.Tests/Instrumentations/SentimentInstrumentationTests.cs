@@ -40,15 +40,20 @@
         {
             // Arrange
             var instrumentation = new SentimentInstrumentation(sentimentClient, this.telemetryClient, settings);
-            Mock.Get(sentimentClient).Setup(s => s.GetSentiment(activity)).Returns(Task.FromResult<double?>(sentimentScore));
+            Mock.Get(sentimentClient)
+                .Setup(s => s.GetSentiment(activity))
+                .Returns(Task.FromResult<double?>(sentimentScore));
 
             // Act
-            await instrumentation.TrackMessageSentiment(activity).ConfigureAwait(false);
+            await instrumentation.TrackMessageSentiment(activity)
+                .ConfigureAwait(false);
 
             // Assert
-            this.mockTelemetryChannel.Verify(tc => tc.Send(It.Is<EventTelemetry>(t =>
-                t.Name == EventTypes.MessageSentiment &&
-                t.Properties[SentimentConstants.Score] == sentimentScore.ToString(CultureInfo.InvariantCulture))));
+            this.mockTelemetryChannel.Verify(
+                tc => tc.Send(It.Is<EventTelemetry>(t =>
+                    t.Name == EventTypes.MessageSentiment &&
+                    t.Properties[SentimentConstants.Score] == sentimentScore.ToString(CultureInfo.InvariantCulture))),
+                Times.Once);
         }
 
         [Theory(DisplayName = "GIVEN empty activity WHEN TrackMessageSentiment is invoked THEN exception is being thrown")]
@@ -58,29 +63,33 @@
             InstrumentationSettings settings)
         {
             // Arrange
-            IMessageActivity activity = null;
+            const IMessageActivity emptyActivity = null;
             var instrumentation = new SentimentInstrumentation(sentimentClient, this.telemetryClient, settings);
 
             // Act
             // Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => instrumentation.TrackMessageSentiment(activity)).ConfigureAwait(false);
+            await Assert.ThrowsAsync<ArgumentNullException>(() => instrumentation.TrackMessageSentiment(emptyActivity))
+                .ConfigureAwait(false);
         }
 
         [Theory(DisplayName = "GIVEN empty sentiment client WHEN SentimentInstrumentation is constructed THEN exception is being thrown")]
         [AutoData]
-        public void GivenEmptySentimentClient_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(InstrumentationSettings settings)
+        public void GivenEmptySentimentClient_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(
+            InstrumentationSettings settings)
         {
             // Arrange
-            const ISentimentClient sentimentClient = null;
+            const ISentimentClient emptySentimentClient = null;
 
             // Act
             // Assert
-            Assert.Throws<ArgumentNullException>(() => new SentimentInstrumentation(sentimentClient, this.telemetryClient, settings));
+            Assert.Throws<ArgumentNullException>(() => new SentimentInstrumentation(emptySentimentClient, this.telemetryClient, settings));
         }
 
         [Theory(DisplayName = "GIVEN empty telemetry client WHEN SentimentInstrumentation is constructed THEN exception is being thrown")]
         [AutoMockData]
-        public void GivenEmptyTelemetryClient_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(ISentimentClient sentimentClient, InstrumentationSettings settings)
+        public void GivenEmptyTelemetryClient_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(
+            ISentimentClient sentimentClient,
+            InstrumentationSettings settings)
         {
             // Arrange
             const TelemetryClient emptyTelemetryClient = null;
@@ -90,9 +99,10 @@
             Assert.Throws<ArgumentNullException>(() => new SentimentInstrumentation(sentimentClient, emptyTelemetryClient, settings));
         }
 
-        [Theory(DisplayName = "GIVEN empty settings WHEN SentimentInstrumentation is constructed THEN exception is thrown")]
+        [Theory(DisplayName = "GIVEN empty settings WHEN SentimentInstrumentation is constructed THEN exception is being thrown")]
         [AutoMockData]
-        public void GivenEmptySettings_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsThrown(ISentimentClient sentimentClient)
+        public void GivenEmptySettings_WhenSentimentInstrumentationIsConstructed_ThenExceptionIsBeingThrown(
+            ISentimentClient sentimentClient)
         {
             // Arrange
             const InstrumentationSettings emptySettings = null;

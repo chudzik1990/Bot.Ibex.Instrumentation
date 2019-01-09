@@ -38,10 +38,11 @@
         public void Given_EmptyActivity_WhenIsIncomingMessageIsInvoked_ThenFalseIsBeingReturned()
         {
             // Arrange
+            const IActivity activity = null;
             const bool expectedResult = false;
 
             // Act
-            var actualResult = ((IActivity)null).IsIncomingMessage();
+            var actualResult = activity.IsIncomingMessage();
 
             // Assert
             actualResult.Should().Be(expectedResult);
@@ -49,7 +50,8 @@
 
         [Theory(DisplayName = "GIVEN Activity WHEN ToSentimentInput is invoked THEN SentimentInput is being returned")]
         [AutoMockData]
-        public void GivenActivity_WhenToSentimentInputIsInvoked_ThenSentimentInputIsBeingReturned(IMessageActivity activity)
+        public void GivenActivity_WhenToSentimentInputIsInvoked_ThenSentimentInputIsBeingReturned(
+            IMessageActivity activity)
         {
             // Arrange
             const int expectedNumberOfDocuments = 1;
@@ -60,15 +62,19 @@
 
             // Assert
             actualResult.Documents.Should().HaveCount(expectedNumberOfDocuments);
-            actualResult.Documents.Should().ContainSingle(i => i.Text == activity.Text && i.Id == expectedSentimentInputId);
+            actualResult.Documents.Should().ContainSingle(i =>
+                i.Text == activity.Text &&
+                i.Id == expectedSentimentInputId);
         }
 
         [Fact(DisplayName = "GIVEN empty Activity WHEN ToSentimentInput is invoked THEN empty SentimentInput is being returned")]
         public void GivenEmptyActivity_WhenToSentimentInputIsInvoked_ThenEmptySentimentInputIsBeingReturned()
         {
             // Arrange
+            const IMessageActivity activity = null;
+
             // Act
-            var actualResult = ((IMessageActivity)null).ToSentimentInput();
+            var actualResult = activity.ToSentimentInput();
 
             // Assert
             actualResult.Should().BeNull();

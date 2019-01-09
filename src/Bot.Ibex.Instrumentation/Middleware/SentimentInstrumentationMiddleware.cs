@@ -61,12 +61,14 @@
 
             if (turnContext.Activity.IsIncomingMessage())
             {
-                await this.sentimentInstrumentation.TrackMessageSentiment(turnContext.Activity).ConfigureAwait(false);
+                await this.sentimentInstrumentation.TrackMessageSentiment(turnContext.Activity)
+                    .ConfigureAwait(false);
             }
 
             if (next != null)
             {
-                await next(cancellationToken).ConfigureAwait(false);
+                await next(cancellationToken)
+                    .ConfigureAwait(false);
             }
         }
 
