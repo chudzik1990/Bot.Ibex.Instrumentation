@@ -15,7 +15,15 @@ namespace Bot.Ibex.Instrumentation.Tests.Extensions
         [InlineAutoData(1979, 10, 14, 9, 15, 0, 0, "1979-10-14T09:15:00+00:00")]
         [InlineAutoData(1999, 12, 31, 23, 59, 59, 999, "1999-12-31T23:59:59.999+00:00")]
         [InlineAutoData(2000, 1, 1, 0, 0, 0, 0, "2000-01-01T00:00:00+00:00")]
-        public void Given_DateTimeOffset_WhenAsIso8601IsInvoked_ThenExpectedStringIsBeingReturned(int year, int month, int day, int hour, int minute, int second, int millisecond, string expected)
+        public void Given_DateTimeOffset_WhenAsIso8601IsInvoked_ThenExpectedStringIsBeingReturned(
+            int year,
+            int month,
+            int day,
+            int hour,
+            int minute,
+            int second,
+            int millisecond,
+            string expected)
         {
             // Arrange
             var dateTimeOffset = new DateTimeOffset(year, month, day, hour, minute, second, millisecond, TimeSpan.Zero);

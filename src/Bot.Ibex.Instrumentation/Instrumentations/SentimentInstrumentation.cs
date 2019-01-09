@@ -3,44 +3,40 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Threading.Tasks;
+    using Bot.Ibex.Instrumentation.Sentiments;
     using Bot.Ibex.Instrumentation.Telemetry;
     using Microsoft.ApplicationInsights;
     using Microsoft.Bot.Builder;
-    using Microsoft.Bot.Builder.AI.QnA;
     using Microsoft.Bot.Schema;
 
-    public class QnAInstrumentation : IQnAInstrumentation
+    public class SentimentInstrumentation : ISentimentInstrumentation
     {
-        public const string QuestionsSeparator = ",";
-
+        private readonly ISentimentClient sentimentClient;
         private readonly TelemetryClient telemetryClient;
         private readonly InstrumentationSettings settings;
 
-        public QnAInstrumentation(TelemetryClient telemetryClient, InstrumentationSettings settings)
+        public SentimentInstrumentation(ISentimentClient sentimentClient, TelemetryClient telemetryClient, InstrumentationSettings settings)
         {
+            this.sentimentClient = sentimentClient ?? throw new ArgumentNullException(nameof(sentimentClient));
             this.telemetryClient = telemetryClient ?? throw new ArgumentNullException(nameof(telemetryClient));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void TrackEvent(IMessageActivity activity, QueryResult queryResult)
+        public async Task TrackMessageSentiment(IMessageActivity activity)
         {
             BotAssert.ActivityNotNull(activity);
-            if (queryResult == null)
-            {
-                throw new ArgumentNullException(nameof(queryResult));
-            }
 
+            var score = await this.sentimentClient.GetSentiment(activity)
+                .ConfigureAwait(false);
             var properties = new Dictionary<string, string>
             {
-                { QnAConstants.UserQuery, activity.Text },
-                { QnAConstants.KnowledgeBaseQuestion, string.Join(QuestionsSeparator, queryResult.Questions) },
-                { QnAConstants.KnowledgeBaseAnswer, queryResult.Answer },
-                { QnAConstants.Score, queryResult.Score.ToString(CultureInfo.InvariantCulture) }
+                { SentimentConstants.Score, score.Value.ToString(CultureInfo.InvariantCulture) }
             };
 
             var builder = new EventTelemetryBuilder(activity, this.settings, properties);
             var eventTelemetry = builder.Build();
-            eventTelemetry.Name = EventTypes.QnaEvent;
+            eventTelemetry.Name = EventTypes.MessageSentiment;
             this.telemetryClient.TrackEvent(eventTelemetry);
         }
     }

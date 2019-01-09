@@ -15,6 +15,8 @@
     using Objectivity.AutoFixture.XUnit2.AutoMoq.Attributes;
     using Xunit;
 
+    [Collection("QnAInstrumentation")]
+    [Trait("Category", "Instrumentations")]
     public class QnAInstrumentationTests
     {
         private const string FakeInstrumentationKey = "FAKE-INSTRUMENTATION-KEY";
@@ -27,12 +29,12 @@
             this.telemetryClient = new TelemetryClient(telemetryConfiguration);
         }
 
-        [Theory(DisplayName = "GIVEN any activity WHEN TrackEvent is invoked THEN even telemetry sent")]
+        [Theory(DisplayName = "GIVEN any activity WHEN TrackEvent is invoked THEN event telemetry is being sent")]
         [AutoMockData]
-        public void GivenAnyActivity_WhenTrackEventIsInvoked_ThenEvenTelemetrySent(
+        public void GivenAnyActivity_WhenTrackEventIsInvoked_ThenEventTelemetryIsBeingSent(
             IMessageActivity activity,
             QueryResult queryResult,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new QnAInstrumentation(this.telemetryClient, settings);
@@ -41,19 +43,21 @@
             instrumentation.TrackEvent(activity, queryResult);
 
             // Assert
-            this.mockTelemetryChannel.Verify(tc => tc.Send(It.Is<EventTelemetry>(t =>
-                t.Name == EventTypes.QnaEvent &&
-                t.Properties[QnAConstants.UserQuery] == activity.Text &&
-                t.Properties[QnAConstants.KnowledgeBaseQuestion] == string.Join(QnAInstrumentation.QuestionsSeparator, queryResult.Questions) &&
-                t.Properties[QnAConstants.KnowledgeBaseAnswer] == queryResult.Answer &&
-                t.Properties[QnAConstants.Score] == queryResult.Score.ToString(CultureInfo.InvariantCulture))));
+            this.mockTelemetryChannel.Verify(
+                tc => tc.Send(It.Is<EventTelemetry>(t =>
+                    t.Name == EventTypes.QnaEvent &&
+                    t.Properties[QnAConstants.UserQuery] == activity.Text &&
+                    t.Properties[QnAConstants.KnowledgeBaseQuestion] == string.Join(QnAInstrumentation.QuestionsSeparator, queryResult.Questions) &&
+                    t.Properties[QnAConstants.KnowledgeBaseAnswer] == queryResult.Answer &&
+                    t.Properties[QnAConstants.Score] == queryResult.Score.ToString(CultureInfo.InvariantCulture))),
+                Times.Once);
         }
 
-        [Theory(DisplayName = "GIVEN empty activity result WHEN TrackEvent is invoked THEN exception is thrown")]
+        [Theory(DisplayName = "GIVEN empty activity result WHEN TrackEvent is invoked THEN exception is being thrown")]
         [AutoData]
-        public void GivenEmptyActivity_WhenTrackEventIsInvoked_ThenExceptionIsThrown(
+        public void GivenEmptyActivity_WhenTrackEventIsInvoked_ThenExceptionIsBeingThrown(
             QueryResult queryResult,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new QnAInstrumentation(this.telemetryClient, settings);
@@ -64,11 +68,11 @@
             Assert.Throws<ArgumentNullException>(() => instrumentation.TrackEvent(emptyActivity, queryResult));
         }
 
-        [Theory(DisplayName = "GIVEN empty query result WHEN TrackEvent is invoked THEN exception is thrown")]
+        [Theory(DisplayName = "GIVEN empty query result WHEN TrackEvent is invoked THEN exception is being thrown")]
         [AutoMockData]
-        public void GivenEmptyQueryResult_WhenTrackEventIsInvoked_ThenExceptionIsThrown(
+        public void GivenEmptyQueryResult_WhenTrackEventIsInvoked_ThenExceptionIsBeingThrown(
             IMessageActivity activity,
-            Settings settings)
+            InstrumentationSettings settings)
         {
             // Arrange
             var instrumentation = new QnAInstrumentation(this.telemetryClient, settings);
@@ -79,9 +83,10 @@
             Assert.Throws<ArgumentNullException>(() => instrumentation.TrackEvent(activity, emptyQueryResult));
         }
 
-        [Theory(DisplayName = "GIVEN empty telemetry client WHEN constructor is invoked THEN exception is thrown")]
+        [Theory(DisplayName = "GIVEN empty telemetry client WHEN QnAInstrumentation is constructed THEN exception is being thrown")]
         [AutoData]
-        public void GivenEmptyTelemetryClient_WhenConstructorIsInvoked_ThenExceptionIsThrown(Settings settings)
+        public void GivenEmptyTelemetryClient_WhenQnAInstrumentationIsConstructed_ThenExceptionIsBeingThrown(
+            InstrumentationSettings settings)
         {
             // Arrange
             const TelemetryClient emptyTelemetryClient = null;
@@ -91,11 +96,11 @@
             Assert.Throws<ArgumentNullException>(() => new QnAInstrumentation(emptyTelemetryClient, settings));
         }
 
-        [Fact(DisplayName = "GIVEN empty settings WHEN constructor is invoked THEN exception is thrown")]
-        public void GivenEmptySettings_WhenConstructorIsInvoked_ThenExceptionIsThrown()
+        [Fact(DisplayName = "GIVEN empty settings WHEN QnAInstrumentation is constructed THEN exception is being thrown")]
+        public void GivenEmptySettings_WhenQnAInstrumentationIsConstructed_ThenExceptionIsBeingThrown()
         {
             // Arrange
-            const Settings emptySettings = null;
+            const InstrumentationSettings emptySettings = null;
 
             // Act
             // Assert

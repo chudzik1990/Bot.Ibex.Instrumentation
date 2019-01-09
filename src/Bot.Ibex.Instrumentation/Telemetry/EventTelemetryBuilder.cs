@@ -10,10 +10,10 @@
     public class EventTelemetryBuilder
     {
         private readonly IActivity activity;
-        private readonly Settings settings;
+        private readonly InstrumentationSettings settings;
         private readonly IEnumerable<KeyValuePair<string, string>> properties;
 
-        public EventTelemetryBuilder(IActivity activity, Settings settings, IEnumerable<KeyValuePair<string, string>> properties = null)
+        public EventTelemetryBuilder(IActivity activity, InstrumentationSettings settings, IEnumerable<KeyValuePair<string, string>> properties = null)
         {
             this.activity = activity ?? throw new ArgumentNullException(nameof(activity));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));

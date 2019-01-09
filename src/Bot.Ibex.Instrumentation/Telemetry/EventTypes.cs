@@ -6,6 +6,7 @@
         public const string ConversationUpdate = "MBFEvent.StartConversation";
         public const string MessageReceived = "MBFEvent.UserMessage";
         public const string MessageSent = "MBFEvent.BotMessage";
+        public const string MessageSentiment = "MBFEvent.Sentiment";
         public const string OtherActivity = "MBFEvent.Other";
         public const string QnaEvent = "MBFEvent.QNAEvent";
     }
