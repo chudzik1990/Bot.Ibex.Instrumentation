@@ -37,11 +37,11 @@ build_script:
     
     if ($env:APPVEYOR_REPO_TAG -eq "true")
     {
-        dotnet pack ./src/$env:namespace --no-build -p:PackageVersion=$env.APPVEYOR_REPO_TAG_NAME
+        dotnet pack ./src/$env:namespace --no-build -p:PackageVersion=$env:APPVEYOR_REPO_TAG_NAME
     }
     else
     {
-        dotnet pack ./src/$env:namespace --no-build -p:PackageVersion=$env.APPVEYOR_BUILD_VERSION
+        dotnet pack ./src/$env:namespace --no-build -p:PackageVersion=$env:APPVEYOR_BUILD_VERSION
     }
 test_script:
 - cmd: >-
