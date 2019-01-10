@@ -83,7 +83,7 @@ services.AddSingleton<SentimentInstrumentation>(instrumentation);
 ```
 
 * `<TEXT_ANALYTICS_SUBSCRIPTION_KEY>` is a subscription key of the Text Analytics to be obtained once it is configured in Azure.
-* `<COGNITIVE_SERVICES_ENDPOINT_URI>` is asupported endpoint of the Cognitive Services (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)
+* `<COGNITIVE_SERVICES_ENDPOINT_URI>` is a supported endpoint of the Cognitive Services (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)
 * `<INSTRUMENTATION_KEY>` is an instrumentation key of Application Insights to be obtained once it is configured in Azure.
 
 ##### Usage
@@ -95,9 +95,42 @@ private async Task HandleMessageSentiment(
 {
     if (turnContext.Activity.IsIncomingMessage())
     {
-        await this.instrumentation.TrackMessageSentiment(turnContext.Activity)
+        await instrumentation.TrackMessageSentiment(turnContext.Activity)
             .ConfigureAwait(false);
     }
+}
+```
+### CustomInstrumentation
+
+Provides custom event instrumentation.
+
+#### Example
+
+##### Setup
+
+```csharp
+var telemetryConfig = new TelemetryConfiguration("<INSTRUMENTATION_KEY>");
+var telemetryClient = new TelemetryClient(telemetryConfig);
+var instrumentation = new CustomInstrumentation(
+    telemetryClient,
+    new InstrumentationSettings {
+        OmitUsernameFromTelemetry = false
+    });
+services.AddSingleton<CustomInstrumentation>(instrumentation);
+```
+
+* `<INSTRUMENTATION_KEY>` is an instrumentation key of Application Insights to be obtained once it is configured in Azure.
+
+##### Usage
+
+```csharp
+private void TrackConversationRating(
+    IActivity activity,
+    int rating,
+    CustomInstrumentation instrumentation)
+{
+    var properties = new Dictionary<string, string> { { "score", rating } };
+    instrumentation.TrackCustomEvent(activity, "ConversationRating", properties);
 }
 ```
 
@@ -155,4 +188,4 @@ services.AddBot<BasicBot>(options =>
 
 * `<INSTRUMENTATION_KEY>` is an instrumentation key of Application Insights to be obtained once it is configured in Azure.
 * `<TEXT_ANALYTICS_SUBSCRIPTION_KEY>` is a subscription key of the Text Analytics to be obtained once it is configured in Azure.
-* `<COGNITIVE_SERVICES_ENDPOINT_URI>` is asupported endpoint of the Cognitive Services (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)
+* `<COGNITIVE_SERVICES_ENDPOINT_URI>` is a supported endpoint of the Cognitive Services (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)
