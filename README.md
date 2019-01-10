@@ -126,7 +126,7 @@ services.AddSingleton<CustomInstrumentation>(instrumentation);
 ```csharp
 private void TrackConversationRating(
     IActivity activity,
-    int rating,
+    string rating,
     CustomInstrumentation instrumentation)
 {
     var properties = new Dictionary<string, string> { { "score", rating } };
