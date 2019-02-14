@@ -49,9 +49,57 @@ private async Task DispatchToQnAMakerAsync(
         }
         else
         {
-            var message = $"Couldn't find an answer in the {serviceName}.";
+            var message = $"Couldn't find an answer.";
             await turnContext.SendActivityAsync(message, cancellationToken: cancellationToken);
         }
+    }
+}
+```
+
+### IntentInstrumentation
+
+Provides LUIS Intent instrumentation.
+
+#### Example
+
+##### Setup
+
+```csharp
+var telemetryConfig = new TelemetryConfiguration("<INSTRUMENTATION_KEY>");
+var telemetryClient = new TelemetryClient(telemetryConfig);
+var instrumentation = new IntentInstrumentation(
+    telemetryClient,
+    new InstrumentationSettings {
+        OmitUsernameFromTelemetry = false
+    });
+services.AddSingleton<IIntentInstrumentation>(instrumentation);
+```
+
+* `<INSTRUMENTATION_KEY>` is an instrumentation key of Application Insights to be obtained once it is configured in Azure.
+
+##### Usage
+
+```csharp
+private async Task DispatchToIntentAsync(
+    IRecognizer luisRecognizer,
+    ITurnContext turnContext,
+    IIntentInstrumentation instrumentation,
+    CancellationToken cancellationToken = default(CancellationToken))
+{
+    var luisResult = await luisRecognizer.RecognizeAsync(turnContext, cancellationToken);
+    var intent = luisResult?.GetTopScoringIntent();
+	
+    if (intent.HasValue)
+    {
+        instrumentation.TrackIntent(activity, luisResult);
+		
+        // Returns recognized intent
+        await turnContext.SendActivityAsync(intent.Value.intent, cancellationToken:cancellationToken);
+    }
+    else
+    {
+        var message = $"Couldn't find an intent.";
+        await turnContext.SendActivityAsync(message, cancellationToken: cancellationToken);
     }
 }
 ```
